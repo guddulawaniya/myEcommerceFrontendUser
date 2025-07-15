@@ -10,7 +10,7 @@ const Sidebar = () => {
   const pathname = usePathname()
   const router = useRouter()
   const [collapsed, setCollapsed] = useState(false)
-  const [expandExperts, setExpandExperts] = useState(false)
+  const [expandOrders, setExpandOrders] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const handleLogout = () => {
@@ -27,11 +27,11 @@ const Sidebar = () => {
     { name: 'Logout' }
   ]
   
-  const expertSubItems = [
+  const orderSubItems = [
     { name: 'All Orders', path: '/admin/orders' },
     { name: 'Completed Orders', path: '/admin/orders/completed-orders' },
-    { name: 'On-Going Orders', path: '/admin//orders/onGoing-orders' },
-    { name: 'Pending Orders', path: '/admin//orders/pending-orders' },
+    { name: 'On-Going Orders', path: '/admin/orders/onGoing-orders' },
+    { name: 'Pending Orders', path: '/admin/orders/pending-orders' },
   ]
 
   return (
@@ -106,13 +106,13 @@ const Sidebar = () => {
                 )
               }
 
-              if (item.isParent && item.name === 'Experts') {
+              if (item.isParent && item.name === 'Orders') {
                 return (
-                  <li key="Experts">
+                  <li key="Orders">
                     <button
-                      onClick={() => setExpandExperts(!expandExperts)}
+                      onClick={() => setExpandOrders(!expandOrders)}
                       className={`w-full flex items-center px-4 py-3 text-sm font-medium transition-colors ${
-                        pathname.includes('/admin/experts')
+                        pathname.includes('/admin/orders')
                           ? 'bg-blue-100 text-blue-700'
                           : 'text-blue-600 hover:bg-blue-50 hover:text-blue-700'
                       }`}
@@ -122,10 +122,10 @@ const Sidebar = () => {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </span>
-                      {(!collapsed || mobileMenuOpen) && <span>Experts</span>}
+                      {(!collapsed || mobileMenuOpen) && <span>Orders</span>}
                       {(!collapsed || mobileMenuOpen) && (
                         <svg
-                          className={`ml-auto h-4 w-4 transform transition-transform duration-200 ${expandExperts ? 'rotate-90' : ''}`}
+                          className={`ml-auto h-4 w-4 transform transition-transform duration-200 ${expandOrders ? 'rotate-90' : ''}`}
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
@@ -136,9 +136,9 @@ const Sidebar = () => {
                       )}
                     </button>
 
-                    {expandExperts && (!collapsed || mobileMenuOpen) && (
+                    {expandOrders && (!collapsed || mobileMenuOpen) && (
                       <ul className="ml-8 mt-1 space-y-1">
-                        {expertSubItems.map((sub) => (
+                        {orderSubItems.map((sub) => (
                           <li key={sub.name}>
                             <Link
                               href={sub.path}

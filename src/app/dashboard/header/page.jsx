@@ -6,12 +6,13 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Header({ toggleSidebar }) {
   const [isOpen, setIsOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [adminData, setAdminData] = useState({ name: 'Admin', email: 'admin@example.com' });
   const [urgentAlerts, setUrgentAlerts] = useState([
     { 
       id: 1, 
       type: 'unassigned',
       text: "Parcel #DC-2023-07-14-001 unassigned for 35 mins", 
-      details: "Pickup: Connaught Place • Drop: Aerocity",
+      details: "Pickup: Sharjah Airport • Drop: Sharjah",
       time: "2 mins ago", 
       read: false 
     },
@@ -48,10 +49,24 @@ export default function Header({ toggleSidebar }) {
   const notificationsRef = useRef(null);
 
   useEffect(() => {
-    // Simulate real-time alerts (in a real app, this would be from WebSocket/socket.io)
+    // Fetch admin data from localStorage
+   const adminInfo = localStorage.getItem('adminData');
+  if (adminInfo) {
+    try {
+      const parsed = JSON.parse(adminInfo);
+      setAdminData({
+        name: parsed.name || 'Admin',
+        email: parsed.email || 'admin@example.com'
+      });
+    } catch (e) {
+      console.error('Error parsing adminData:', e);
+    }
+  }
+
+    // Simulate real-time alerts
     const alertInterval = setInterval(() => {
       const now = new Date();
-      if (now.getMinutes() % 5 === 0) { // Every 5 minutes
+      if (now.getMinutes() % 5 === 0) {
         const newAlert = {
           id: now.getTime(),
           type: Math.random() > 0.5 ? 'unassigned' : 'delay',
@@ -64,14 +79,14 @@ export default function Header({ toggleSidebar }) {
         };
         setUrgentAlerts(prev => [newAlert, ...prev]);
       }
-    }, 300000); // 5 minutes
+    }, 300000);
 
     return () => clearInterval(alertInterval);
   }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target) ){
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
       if (notificationsRef.current && !notificationsRef.current.contains(event.target)) {
@@ -83,8 +98,8 @@ export default function Header({ toggleSidebar }) {
   }, []);
 
   const handleLogout = () => {
-    console.log("Logging out...");
-    setIsOpen(false);
+    localStorage.removeItem('token');
+    window.location.href = '/login';
   };
 
   const markAsRead = (id) => {
@@ -114,14 +129,29 @@ export default function Header({ toggleSidebar }) {
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
       <div className="flex justify-between items-center px-4 md:px-6 py-3">
-        {/* Mobile menu button */}
-        <button
-          onClick={toggleSidebar}
-          className="md:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-700"
-        >
-          <FiMenu size={20} />
-        </button>
+        {/* Left side - Admin info and mobile menu */}
+        <div className="flex items-center gap-4">
+          {/* Mobile menu button */}
+          <button
+            onClick={toggleSidebar}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-700"
+          >
+            <FiMenu size={20} />
+          </button>
 
+          {/* Admin info (visible on desktop) */}
+          <div className="hidden md:flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
+              <FiUser size={16} />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-900">{adminData.name}</p>
+              <p className="text-xs text-gray-500">Admin</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right side - Notifications and profile dropdown */}
         <div className="flex items-center gap-4">
           {/* Notifications dropdown */}
           <div className="relative" ref={notificationsRef}>
@@ -238,10 +268,9 @@ export default function Header({ toggleSidebar }) {
               }}
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-200 hover:bg-gray-100 group"
             >
-              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white md:hidden">
                 <FiUser size={16} />
               </div>
-              <span className="font-medium text-gray-900 hidden md:inline">Admin</span>
               <motion.div
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.2 }}
@@ -261,8 +290,8 @@ export default function Header({ toggleSidebar }) {
                 >
                   <div className="px-1 py-1">
                     <div className="px-4 py-3 border-b border-gray-200">
-                      <p className="text-sm font-medium text-gray-900">Delivery Admin</p>
-                      <p className="text-xs text-gray-500">admin@deliveryapp.com</p>
+                      <p className="text-sm font-medium text-gray-900">{adminData.name}</p>
+                      <p className="text-xs text-gray-500">{adminData.email}</p>
                     </div>
                     
                     <button className="w-full flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-colors">

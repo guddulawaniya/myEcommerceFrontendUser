@@ -20,7 +20,7 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const res = await axios.post('/api/admin/login', { email, password });
+      const res = await axios.post('https://sheduled-8umy.onrender.com/api/admin/login', { email, password });
      const { data } = res.data;
 
 if (data && data.email === 'admin@sheduled.com') {

@@ -50,18 +50,18 @@ export default function Header({ toggleSidebar }) {
 
   useEffect(() => {
     // Fetch admin data from localStorage
-   const adminInfo = localStorage.getItem('adminData');
-  if (adminInfo) {
-    try {
-      const parsed = JSON.parse(adminInfo);
-      setAdminData({
-        name: parsed.name || 'Admin',
-        email: parsed.email || 'admin@example.com'
-      });
-    } catch (e) {
-      console.error('Error parsing adminData:', e);
+    const adminInfo = localStorage.getItem('adminData');
+    if (adminInfo) {
+      try {
+        const parsed = JSON.parse(adminInfo);
+        setAdminData({
+          name: parsed.name || 'Admin',
+          email: parsed.email || 'admin@example.com'
+        });
+      } catch (e) {
+        console.error('Error parsing adminData:', e);
+      }
     }
-  }
 
     // Simulate real-time alerts
     const alertInterval = setInterval(() => {
@@ -127,9 +127,9 @@ export default function Header({ toggleSidebar }) {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+    <header className="sticky top-0  bg-white border-b border-gray-200 shadow-sm relative">
       <div className="flex justify-between items-center px-4 md:px-6 py-3">
-        {/* Left side - Admin info and mobile menu */}
+        {/* Left side - Mobile menu button only */}
         <div className="flex items-center gap-4">
           {/* Mobile menu button */}
           <button
@@ -138,21 +138,21 @@ export default function Header({ toggleSidebar }) {
           >
             <FiMenu size={20} />
           </button>
+        </div>
 
-          {/* Admin info (visible on desktop) */}
-          <div className="hidden md:flex items-center gap-3">
+        {/* Right side - Admin info, notifications and profile dropdown */}
+        <div className="flex items-center gap-4">
+          {/* Admin info (always visible on right side) */}
+          <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white">
               <FiUser size={16} />
             </div>
-            <div>
+            <div className="hidden md:block">
               <p className="text-sm font-medium text-gray-900">{adminData.name}</p>
               <p className="text-xs text-gray-500">Admin</p>
             </div>
           </div>
-        </div>
 
-        {/* Right side - Notifications and profile dropdown */}
-        <div className="flex items-center gap-4">
           {/* Notifications dropdown */}
           <div className="relative" ref={notificationsRef}>
             <button
@@ -268,9 +268,6 @@ export default function Header({ toggleSidebar }) {
               }}
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-200 hover:bg-gray-100 group"
             >
-              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white md:hidden">
-                <FiUser size={16} />
-              </div>
               <motion.div
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.2 }}

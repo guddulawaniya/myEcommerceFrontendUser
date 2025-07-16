@@ -1,14 +1,30 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Sidebar from "../../../dashboard/sidebar/page";
 import Header from "../../../dashboard/header/page";
 
-export const dynamic = "force-dynamic"; // ✅ Prevents static build crash
+export const dynamic = "force-dynamic";
 
 const EditUserPage = () => {
+  return (
+    <div className="relative min-h-screen bg-gray-100">
+      <Sidebar />
+      <div className="relative lg:ml-64">
+        <Header />
+        <main className="pt-16 px-4">
+          <Suspense fallback={<p className="text-gray-600">Loading...</p>}>
+            <EditUserForm />
+          </Suspense>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+const EditUserForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [userId, setUserId] = useState(null);
@@ -19,13 +35,11 @@ const EditUserPage = () => {
     addresses: [],
   });
 
-  // ✅ Get userId safely in browser after mount
   useEffect(() => {
     const id = searchParams.get("id");
     if (id) setUserId(id);
   }, [searchParams]);
 
-  // ✅ Fetch user details only when userId is ready
   useEffect(() => {
     if (userId) {
       axios
@@ -80,126 +94,115 @@ const EditUserPage = () => {
     }
   };
 
-  // ✅ Show loading while userId not available
   if (!userId) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-lg text-gray-600">Loading user...</p>
-      </div>
-    );
+    return <p className="text-gray-600">Loading user...</p>;
   }
 
   return (
-    <div className="relative min-h-screen bg-gray-100">
-      <Sidebar />
-      <div className="relative lg:ml-64">
-        <Header />
-        <main className="pt-16 px-4">
-          <h1 className="text-2xl font-bold mb-4">Edit User</h1>
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md space-y-4 max-w-2xl">
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Name"
-              className="w-full border px-4 py-2 rounded"
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="Email"
-              className="w-full border px-4 py-2 rounded"
-              required
-            />
-            <input
-              type="text"
-              name="phone"
-              value={form.phone}
-              onChange={handleChange}
-              placeholder="Phone"
-              className="w-full border px-4 py-2 rounded"
-            />
+    <>
+      <h1 className="text-2xl font-bold mb-4">Edit User</h1>
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md space-y-4 max-w-2xl">
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Name"
+          className="w-full border px-4 py-2 rounded"
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
+          className="w-full border px-4 py-2 rounded"
+          required
+        />
+        <input
+          type="text"
+          name="phone"
+          value={form.phone}
+          onChange={handleChange}
+          placeholder="Phone"
+          className="w-full border px-4 py-2 rounded"
+        />
 
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold">Addresses</h2>
-              {form.addresses.map((address, index) => (
-                <div key={index} className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded">
-                  <input
-                    type="text"
-                    value={address.type || ""}
-                    onChange={(e) => handleAddressChange(index, "type", e.target.value)}
-                    placeholder="Type"
-                    className="border px-3 py-2 rounded"
-                  />
-                  <input
-                    type="text"
-                    value={address.building || ""}
-                    onChange={(e) => handleAddressChange(index, "building", e.target.value)}
-                    placeholder="Building"
-                    className="border px-3 py-2 rounded"
-                  />
-                  <input
-                    type="text"
-                    value={address.apartment || ""}
-                    onChange={(e) => handleAddressChange(index, "apartment", e.target.value)}
-                    placeholder="Apartment"
-                    className="border px-3 py-2 rounded"
-                  />
-                  <input
-                    type="text"
-                    value={address.area || ""}
-                    onChange={(e) => handleAddressChange(index, "area", e.target.value)}
-                    placeholder="Area"
-                    className="border px-3 py-2 rounded"
-                  />
-                  <input
-                    type="text"
-                    value={address.emirate || ""}
-                    onChange={(e) => handleAddressChange(index, "emirate", e.target.value)}
-                    placeholder="Emirate"
-                    className="border px-3 py-2 rounded"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeAddress(index)}
-                    className="text-red-600 hover:underline col-span-2"
-                  >
-                    Remove Address
-                  </button>
-                </div>
-              ))}
+        <div className="space-y-4">
+          <h2 className="text-lg font-semibold">Addresses</h2>
+          {form.addresses.map((address, index) => (
+            <div key={index} className="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded">
+              <input
+                type="text"
+                value={address.type || ""}
+                onChange={(e) => handleAddressChange(index, "type", e.target.value)}
+                placeholder="Type"
+                className="border px-3 py-2 rounded"
+              />
+              <input
+                type="text"
+                value={address.building || ""}
+                onChange={(e) => handleAddressChange(index, "building", e.target.value)}
+                placeholder="Building"
+                className="border px-3 py-2 rounded"
+              />
+              <input
+                type="text"
+                value={address.apartment || ""}
+                onChange={(e) => handleAddressChange(index, "apartment", e.target.value)}
+                placeholder="Apartment"
+                className="border px-3 py-2 rounded"
+              />
+              <input
+                type="text"
+                value={address.area || ""}
+                onChange={(e) => handleAddressChange(index, "area", e.target.value)}
+                placeholder="Area"
+                className="border px-3 py-2 rounded"
+              />
+              <input
+                type="text"
+                value={address.emirate || ""}
+                onChange={(e) => handleAddressChange(index, "emirate", e.target.value)}
+                placeholder="Emirate"
+                className="border px-3 py-2 rounded"
+              />
               <button
                 type="button"
-                onClick={addAddress}
-                className="text-blue-600 hover:underline"
+                onClick={() => removeAddress(index)}
+                className="text-red-600 hover:underline col-span-2"
               >
-                + Add Address
+                Remove Address
               </button>
             </div>
+          ))}
+          <button
+            type="button"
+            onClick={addAddress}
+            className="text-blue-600 hover:underline"
+          >
+            + Add Address
+          </button>
+        </div>
 
-            <div className="flex gap-4">
-              <button
-                type="submit"
-                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-              >
-                Update
-              </button>
-              <button
-                type="button"
-                onClick={() => router.back()}
-                className="border border-gray-500 px-6 py-2 rounded hover:bg-gray-100"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </main>
-      </div>
-    </div>
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+          >
+            Update
+          </button>
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="border border-gray-500 px-6 py-2 rounded hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </>
   );
 };
 

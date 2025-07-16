@@ -6,10 +6,12 @@ import axios from "axios";
 import Sidebar from "../../../dashboard/sidebar/page";
 import Header from "../../../dashboard/header/page";
 
+export const dynamic = "force-dynamic"; // ✅ Prevents static build crash
+
 const EditUserPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const userId = searchParams.get("id");
+  const [userId, setUserId] = useState(null);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -17,6 +19,13 @@ const EditUserPage = () => {
     addresses: [],
   });
 
+  // ✅ Get userId safely in browser after mount
+  useEffect(() => {
+    const id = searchParams.get("id");
+    if (id) setUserId(id);
+  }, [searchParams]);
+
+  // ✅ Fetch user details only when userId is ready
   useEffect(() => {
     if (userId) {
       axios
@@ -70,6 +79,15 @@ const EditUserPage = () => {
       console.error("Update failed", err);
     }
   };
+
+  // ✅ Show loading while userId not available
+  if (!userId) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-lg text-gray-600">Loading user...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-gray-100">

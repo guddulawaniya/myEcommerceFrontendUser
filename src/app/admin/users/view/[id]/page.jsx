@@ -2,32 +2,26 @@
 export const dynamic = "force-dynamic";
 
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import axios from "axios";
-import Sidebar from "../../../dashboard/sidebar/page";
-import Header from "../../../dashboard/header/page";
+import Sidebar from "../../../../dashboard/sidebar/page";
+import Header from "../../../../dashboard/header/page";
 import Link from "next/link";
 import { FiArrowLeft, FiUser, FiMail, FiPhone, FiKey, FiCalendar, FiMapPin } from "react-icons/fi";
 
 const ViewUserPage = () => {
-  const searchParams = useSearchParams();
-  const [userId, setUserId] = useState(null);
+  const { id: userId } = useParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
 
-  // Get userId after hydration
-  useEffect(() => {
-    const id = searchParams.get("id");
-    if (id) setUserId(id);
-  }, [searchParams]);
-
-  // Fetch user data
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "dark") setDarkMode(true);
+  }, []);
 
+  useEffect(() => {
     if (userId) {
       setLoading(true);
       axios
@@ -67,7 +61,6 @@ const ViewUserPage = () => {
         />
         <main className={`pt-16 px-4 sm:px-6 min-h-screen ${darkMode ? "dark:bg-gray-900" : "bg-gray-100"}`}>
           <div className="max-w-4xl mx-auto py-6">
-            {/* Back Button and Title */}
             <div className="flex items-center mb-6">
               <Link
                 href="/admin/users"
@@ -78,7 +71,6 @@ const ViewUserPage = () => {
               <h1 className={`text-2xl font-bold ${darkMode ? "text-white" : "text-gray-800"}`}>User Details</h1>
             </div>
 
-            {/* Loading State */}
             {loading && (
               <div className={`p-8 text-center rounded-lg ${darkMode ? "bg-gray-800" : "bg-white"} shadow`}>
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
@@ -86,7 +78,6 @@ const ViewUserPage = () => {
               </div>
             )}
 
-            {/* Error State */}
             {error && (
               <div className={`p-6 rounded-lg ${darkMode ? "bg-red-900" : "bg-red-100"} shadow`}>
                 <p className={`${darkMode ? "text-red-200" : "text-red-800"}`}>{error}</p>
@@ -99,7 +90,6 @@ const ViewUserPage = () => {
               </div>
             )}
 
-            {/* User Info */}
             {user && !loading && (
               <div className={`rounded-lg shadow overflow-hidden ${darkMode ? "bg-gray-800" : "bg-white"}`}>
                 <div className={`px-6 py-4 border-b ${darkMode ? "border-gray-700" : "border-gray-200"}`}>

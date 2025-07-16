@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import axios from "axios";
-import Sidebar from "../../../dashboard/sidebar/page";
-import Header from "../../../dashboard/header/page";
+import Sidebar from "../../../../dashboard/sidebar/page";
+import Header from "../../../../dashboard/header/page";
 
 export const dynamic = "force-dynamic";
 
@@ -26,19 +26,13 @@ const EditUserPage = () => {
 
 const EditUserForm = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [userId, setUserId] = useState(null);
+  const { id: userId } = useParams();
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     addresses: [],
   });
-
-  useEffect(() => {
-    const id = searchParams.get("id");
-    if (id) setUserId(id);
-  }, [searchParams]);
 
   useEffect(() => {
     if (userId) {

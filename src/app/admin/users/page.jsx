@@ -132,13 +132,13 @@ const UserListPage = () => {
                           <td className="px-3 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div className="flex justify-end space-x-2 sm:space-x-4">
                               <Link
-                                href={`/admin/users/view?id=${user._id}`}
+                                href={`/admin/users/view/${user._id}`}
                                 className={`${darkMode ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-900"} text-xs sm:text-sm`}
                               >
                                 View
                               </Link>
                               <Link
-                                href={`/admin/users/edit?id=${user._id}`}
+                                href={`/admin/users/edit/${user._id}`}
                                 className={`${darkMode ? "text-yellow-400 hover:text-yellow-300" : "text-yellow-600 hover:text-yellow-900"} text-xs sm:text-sm`}
                               >
                                 Edit

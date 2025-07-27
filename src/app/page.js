@@ -1,10 +1,13 @@
-import Image from "next/image";
-import LoginPage from "./login/page";
+"use client";
+import { useState } from "react";
+import Navbar from "./components/nav/page";
+import LandingPage from "./landing/page";
 
 export default function Home() {
   return (
-   <>
-     <LoginPage/>
-   </>
+      <>
+       <Navbar />
+       <LandingPage/>
+      </>
   );
 }

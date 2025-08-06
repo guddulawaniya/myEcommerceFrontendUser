@@ -13,12 +13,14 @@ import {
 } from 'react-icons/fi'
 import { motion, AnimatePresence } from 'framer-motion'
 import logo from '../../../assets/images/logo.jpg'
+import LoginModal from '../login/page'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [hoveredItem, setHoveredItem] = useState(null)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +31,7 @@ export default function Navbar() {
   }, [])
 
   const navItems = [
-    { name: 'Home', path: '/' },
+    { name: 'Home', path: '/' , highlight: true},
     { 
       name: 'Categories', 
       path: '/categories',
@@ -41,7 +43,7 @@ export default function Navbar() {
         'Toys & Games'
       ]
     },
-    { name: 'Deals', path: '/deals', highlight: true },
+    { name: 'Deals', path: '/deals' },
     { name: 'New Releases', path: '/new' },
     { name: 'Customer Service', path: '/support' }
   ]
@@ -51,21 +53,20 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Row */}
         <div className="flex justify-between items-center h-16">
-          {/* Logo - Now using Image */}
+          {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
             <motion.div 
               whileHover={{ scale: 1.05 }}
               className="flex items-center h-10"
             >
-             <Image 
-  src={logo}
-  alt="mk shopping zone"
-  width={160}
-  height={100}
-  className="h-[100px] w-auto object-contain"
-  priority
-/>
-
+              <Image 
+                src={logo}
+                alt="mk shopping zone"
+                width={160}
+                height={100}
+                className="h-[100px] w-auto object-contain"
+                priority
+              />
             </motion.div>
           </Link>
 
@@ -93,10 +94,13 @@ export default function Navbar() {
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center space-x-6">
             <motion.div whileHover={{ y: -2 }}>
-              <Link href="/account" className="flex flex-col items-center text-blue-900 hover:text-blue-600">
+              <button 
+                onClick={() => setIsLoginModalOpen(true)}
+                className="flex flex-col items-center text-blue-900 hover:text-blue-600"
+              >
                 <FiUser size={20} />
                 <span className="text-xs mt-1">Profile</span>
-              </Link>
+              </button>
             </motion.div>
             
             <motion.div whileHover={{ y: -2 }}>
@@ -246,16 +250,16 @@ export default function Navbar() {
               
               {/* Mobile Account Links */}
               <div className="flex space-x-4 pt-4 px-3 border-t border-gray-200">
-                <Link href="/account">
-                  <motion.div 
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center text-blue-800 px-3 py-2 rounded-md bg-blue-50"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <FiUser className="mr-2" size={18} />
-                    <span>My Account</span>
-                  </motion.div>
-                </Link>
+                <button 
+                  onClick={() => {
+                    setIsOpen(false)
+                    setIsLoginModalOpen(true)
+                  }}
+                  className="flex items-center text-blue-800 px-3 py-2 rounded-md bg-blue-50"
+                >
+                  <FiUser className="mr-2" size={18} />
+                  <span>Login/Signup</span>
+                </button>
                 
                 <Link href="/cart">
                   <motion.div 
@@ -275,6 +279,12 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </header>
   )
 }

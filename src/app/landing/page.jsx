@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { FiChevronLeft, FiChevronRight, FiShoppingCart, FiHeart, FiStar, FiClock } from 'react-icons/fi'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-
+  
 export default function LandingPage() {
   // Hero carousel images (Free images from Unsplash)
   const heroImages = [
@@ -204,23 +204,23 @@ export default function LandingPage() {
               <span className="text-xs text-gray-500 line-through ml-2">₹{product.originalPrice.toLocaleString()}</span>
             </div>
             
-            <div className="flex items-center mt-2">
-              <div className="flex text-yellow-400">
-                {[...Array(5)].map((_, i) => (
-                  <FiStar 
-                    key={i} 
-                    size={14} 
-                    className={i < Math.floor(product.rating) ? 'fill-current' : ''} 
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-gray-500 ml-1">({Math.floor(Math.random() * 100)})</span>
-            </div>
-            
+       <div className="flex items-center mt-2">
+  <div className="flex text-yellow-400">
+    {[...Array(5)].map((_, i) => (
+      <FiStar 
+        key={i} 
+        size={14} 
+        className={i < Math.floor(product.rating) ? 'fill-current' : ''} 
+      />
+    ))}
+  </div>
+  <span className="text-xs text-gray-500 ml-1">({product.rating.toFixed(1)})</span>
+</div>
+{/*             
             <button className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-sm font-medium transition-colors flex items-center justify-center">
               <FiShoppingCart className="mr-2" size={16} />
               Add to Cart
-            </button>
+            </button> */}
           </div>
         </motion.div>
       ))}

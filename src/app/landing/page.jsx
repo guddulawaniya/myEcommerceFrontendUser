@@ -4,8 +4,11 @@ import { useState, useEffect, useRef } from 'react'
 import { FiChevronLeft, FiChevronRight, FiShoppingCart, FiHeart, FiStar, FiClock } from 'react-icons/fi'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-  
+import { useRouter } from 'next/navigation'
+
 export default function LandingPage() {
+  const router = useRouter()
+  
   // Hero carousel images (Free images from Unsplash)
   const heroImages = [
     'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
@@ -23,7 +26,8 @@ export default function LandingPage() {
       originalPrice: 3999, 
       discount: 50, 
       image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-      rating: 4.5
+      rating: 4.5,
+      description: 'Premium wireless headphones with noise cancellation and 30-hour battery life.'
     },
     { 
       id: 2, 
@@ -32,7 +36,8 @@ export default function LandingPage() {
       originalPrice: 4999, 
       discount: 50, 
       image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1399&q=80',
-      rating: 4.2
+      rating: 4.2,
+      description: 'Feature-rich smartwatch with fitness tracking and notifications.'
     },
     { 
       id: 3, 
@@ -41,7 +46,8 @@ export default function LandingPage() {
       originalPrice: 2599, 
       discount: 50, 
       image: 'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1458&q=80',
-      rating: 4.0
+      rating: 4.0,
+      description: 'Portable Bluetooth speaker with 20W output and 15-hour battery.'
     },
     { 
       id: 4, 
@@ -50,7 +56,8 @@ export default function LandingPage() {
       originalPrice: 2999, 
       discount: 40, 
       image: 'https://images.unsplash.com/photo-1576243345690-4e4b79b63288?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-      rating: 3.8
+      rating: 3.8,
+      description: 'Advanced fitness tracker with heart rate monitoring and sleep analysis.'
     },
     { 
       id: 5, 
@@ -59,7 +66,8 @@ export default function LandingPage() {
       originalPrice: 1499, 
       discount: 40, 
       image: 'https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80',
-      rating: 4.1
+      rating: 4.1,
+      description: '20000mAh power bank with fast charging support.'
     }
   ]
 
@@ -85,6 +93,16 @@ export default function LandingPage() {
     return () => clearInterval(heroIntervalRef.current)
   }, [])
 
+  // Handle product click
+  const handleProductClick = (productId) => {
+    router.push(`/product/${productId}`)
+  }
+
+  // Prevent event bubbling when clicking buttons inside product card
+  const handleButtonClick = (e) => {
+    e.stopPropagation()
+  }
+
   return (
     <div className="bg-gray-50 pt-26">
       {/* Hero Carousel */}
@@ -103,7 +121,7 @@ export default function LandingPage() {
               fill
               className="object-cover"
               priority={index === 0}
-              unoptimized // Remove this if you want Next.js to optimize these external images
+              unoptimized
             />
           </motion.div>
         ))}
@@ -151,82 +169,80 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Deal of the Day */}
-    {/* Hot Deals Section */}
-<div className="bg-white shadow-sm mt-4 py-6 px-4 md:px-8">
-  <div className="max-w-7xl mx-auto">
-    <div className="flex items-center justify-between mb-6">
-      <h2 className="text-2xl font-bold text-gray-800">
-        <span className="text-red-600">HOT</span> DEALS
-      </h2>
-      <button className="flex items-center text-blue-600 font-medium">
-        View All <FiChevronRight className="ml-1" />
-      </button>
-    </div>
-    
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-      {products.map((product) => (
-        <motion.div
-          key={product.id}
-          whileHover={{ y: -5, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
-          className="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden relative flex flex-col"
-        >
-          {/* Discount badge with proper spacing */}
-          <div className="absolute top-2 left-2 z-10">
-            <span className="bg-red-600 text-white text-xs px-2 py-1 rounded font-bold">
-              {product.discount}% OFF
-            </span>
+      {/* Hot Deals Section */}
+      <div className="bg-white shadow-sm mt-4 py-6 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">
+              <span className="text-red-600">HOT</span> DEALS
+            </h2>
+            <button className="flex items-center text-blue-600 font-medium">
+              View All <FiChevronRight className="ml-1" />
+            </button>
           </div>
           
-          {/* Wishlist button */}
-          <button className="absolute top-2 right-2 z-10 bg-white/90 rounded-full p-1.5 shadow-sm hover:bg-red-100 hover:text-red-500 transition-colors">
-            <FiHeart size={16} />
-          </button>
-          
-          {/* Product image container with padding to avoid overlap */}
-          <div className="relative h-40 w-full mt-6"> {/* Added mt-6 to push image down below discount badge */}
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-contain p-4"
-              style={{ objectPosition: 'center' }}
-              unoptimized
-            />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {products.map((product) => (
+              <motion.div
+                key={product.id}
+                whileHover={{ y: -5, boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }}
+                className="bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden relative flex flex-col cursor-pointer"
+                onClick={() => handleProductClick(product.id)}
+              >
+                {/* Discount badge with proper spacing */}
+                <div className="absolute top-2 left-2 z-10">
+                  <span className="bg-red-600 text-white text-xs px-2 py-1 rounded font-bold">
+                    {product.discount}% OFF
+                  </span>
+                </div>
+                
+                {/* Wishlist button */}
+                <button 
+                  className="absolute top-2 right-2 z-10 bg-white/90 rounded-full p-1.5 shadow-sm hover:bg-red-100 hover:text-red-500 transition-colors"
+                  onClick={handleButtonClick}
+                >
+                  <FiHeart size={16} />
+                </button>
+                
+                {/* Product image container with padding to avoid overlap */}
+                <div className="relative h-40 w-full mt-6">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain p-4"
+                    style={{ objectPosition: 'center' }}
+                    unoptimized
+                  />
+                </div>
+                
+                {/* Product details */}
+                <div className="p-3 pt-0 flex-grow flex flex-col">
+                  <h3 className="text-sm font-medium text-gray-800 line-clamp-2 min-h-[40px]">{product.name}</h3>
+                  
+                  <div className="flex items-center mt-2">
+                    <span className="text-lg font-bold text-blue-600">₹{product.price.toLocaleString()}</span>
+                    <span className="text-xs text-gray-500 line-through ml-2">₹{product.originalPrice.toLocaleString()}</span>
+                  </div>
+                  
+                  <div className="flex items-center mt-2">
+                    <div className="flex text-yellow-400">
+                      {[...Array(5)].map((_, i) => (
+                        <FiStar 
+                          key={i} 
+                          size={14} 
+                          className={i < Math.floor(product.rating) ? 'fill-current' : ''} 
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-500 ml-1">({product.rating.toFixed(1)})</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
-          
-          {/* Product details */}
-          <div className="p-3 pt-0 flex-grow flex flex-col"> {/* Added pt-0 to reduce top padding */}
-            <h3 className="text-sm font-medium text-gray-800 line-clamp-2 min-h-[40px]">{product.name}</h3>
-            
-            <div className="flex items-center mt-2">
-              <span className="text-lg font-bold text-blue-600">₹{product.price.toLocaleString()}</span>
-              <span className="text-xs text-gray-500 line-through ml-2">₹{product.originalPrice.toLocaleString()}</span>
-            </div>
-            
-       <div className="flex items-center mt-2">
-  <div className="flex text-yellow-400">
-    {[...Array(5)].map((_, i) => (
-      <FiStar 
-        key={i} 
-        size={14} 
-        className={i < Math.floor(product.rating) ? 'fill-current' : ''} 
-      />
-    ))}
-  </div>
-  <span className="text-xs text-gray-500 ml-1">({product.rating.toFixed(1)})</span>
-</div>
-{/*             
-            <button className="w-full mt-3 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded text-sm font-medium transition-colors flex items-center justify-center">
-              <FiShoppingCart className="mr-2" size={16} />
-              Add to Cart
-            </button> */}
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-</div>
+        </div>
+      </div>
 
       {/* Categories */}
       <div className="mt-8 px-4 md:px-8">

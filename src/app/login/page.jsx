@@ -219,7 +219,7 @@ export default function LoginPage() {
       </main>
 
       <footer className="bg-gray-100 py-6 px-4 text-center text-sm text-gray-600">
-        <p>© 2025 MK Shopping Zone. All rights reserved.</p>
+        <p>© 2025 Mrigks. All rights reserved.</p>
       </footer>
     </div>
   )

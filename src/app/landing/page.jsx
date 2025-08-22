@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation'
 export default function LandingPage() {
   const router = useRouter()
   
-  // Hero carousel images (Free images from Unsplash)
   const heroImages = [
     'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
     'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
@@ -17,9 +16,8 @@ export default function LandingPage() {
     'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1399&q=80'
   ]
 
-  // Products data with free image URLs
   const products = [
-    { 
+    {  
       id: 1, 
       name: 'Wireless Headphones', 
       price: 1999, 
@@ -29,7 +27,7 @@ export default function LandingPage() {
       rating: 4.5,
       description: 'Premium wireless headphones with noise cancellation and 30-hour battery life.'
     },
-    { 
+    {
       id: 2, 
       name: 'Smart Watch', 
       price: 2499, 
@@ -355,7 +353,7 @@ export default function LandingPage() {
         </div>
         
         <div className="border-t border-blue-700 mt-8 pt-8 text-center text-sm text-blue-300">
-          © 2025 mkshoppingzone. All Rights Reserved.
+          © 2025 mrigks. All Rights Reserved.
         </div>
       </footer>
     </div>

@@ -410,8 +410,7 @@ export default function DealsPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-xl font-bold mb-4 flex items-center">
-              <span className="bg-white text-blue-600 px-2 py-1 rounded-md mr-2">MK Shopping zone</span>
-              <span>STORE</span>
+              <span className="bg-white text-blue-600 px-2 py-1 rounded-md mr-2">Mrigks</span>
             </h3>
             <p className="text-sm text-blue-200">
               India's fastest growing e-commerce platform with millions of happy customers.
@@ -459,7 +458,7 @@ export default function DealsPage() {
         </div>
         
         <div className="border-t border-blue-700 mt-8 pt-8 text-center text-sm text-blue-300">
-          © 2025 mkshoppingzone. All Rights Reserved.
+          © 2025 mrigks. All Rights Reserved.
         </div>
       </footer>
     </div>

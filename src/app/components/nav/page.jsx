@@ -12,7 +12,7 @@ import {
   FiChevronDown
 } from 'react-icons/fi'
 import { motion, AnimatePresence } from 'framer-motion'
-import logo from '../../../assets/images/logo.jpg'
+import logo from '../../../assets/images/logo.png'
 import LoginModal from '../login/page'
 
 export default function Navbar() {
@@ -61,7 +61,7 @@ export default function Navbar() {
             >
               <Image 
                 src={logo}
-                alt="mk shopping zone"
+                alt="mrigks"
                 width={160}
                 height={100}
                 className="h-[100px] w-auto object-contain"
@@ -189,7 +189,7 @@ export default function Navbar() {
               whileHover={{ scale: 1.05 }}
               className="bg-blue-100 text-blue-800 px-3 py-1 rounded-md text-sm font-medium cursor-pointer"
             >
-              Sell on MK Shoppingzone
+              Sell on Mrigks
             </motion.div>
           </div>
         </div>

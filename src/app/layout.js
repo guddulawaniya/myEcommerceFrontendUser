@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "MK Shopping zone",
+  title: "Mrigks",
 };
 
 export default function RootLayout({ children }) {

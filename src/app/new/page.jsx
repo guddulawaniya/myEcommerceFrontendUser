@@ -434,7 +434,7 @@ export default function NewReleasesPage() {
         </div>
         
         <div className="border-t border-blue-700 mt-8 pt-8 text-center text-sm text-blue-300">
-          © 2025 mkshoppingzone. All Rights Reserved.
+          © 2025 mrigks. All Rights Reserved.
         </div>
       </footer>
     </div>
